@@ -1,0 +1,50 @@
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"strings"
+)
+
+import _ "github.com/go-sql-driver/mysql"
+
+// Log into specified server and get the process list
+func GetProcessList(databaseServer string , user string, password string) (output []MySQLProcess){
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/", user, password, databaseServer))
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	rows, err := db.Query("SELECT ID, USER, HOST, DB, COMMAND, TIME, STATE, INFO FROM INFORMATION_SCHEMA.PROCESSLIST")
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Printf("%+v", rows)
+	for rows.Next() {
+		fmt.Println()
+		var NewProcess MySQLProcess
+		err := rows.Scan(&NewProcess.ID,
+			&NewProcess.User,
+			&NewProcess.Host,
+			&NewProcess.Database,
+			&NewProcess.Command,
+			&NewProcess.Time,
+			&NewProcess.State,
+			&NewProcess.Info,
+			)
+		if err != nil {
+			fmt.Println(err)
+		}
+		hostStringSplit := strings.Split(*NewProcess.Host, ":")
+		NewProcess.Host = &hostStringSplit[0]
+		output = append(output, NewProcess)
+	}
+
+	return
+}
