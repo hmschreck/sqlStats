@@ -6,23 +6,15 @@
   "mappings": {
     "processlist": {
       "properties": {
-        "Date": {
-          "type": "date"
-        },
+        "Date": {"type": "date"},
         "DatabaseHost": {"type": "keyword"},
-        "Count": {"type": "integer"},
-        "Processes": {
-          "type": "nested",
-          "properties": {
-            "ID": {"type":  "keyword"},
-            "User": {"type":  "keyword"},
-            "Host": {"type":  "keyword"},
-            "Database": {"type":  "keyword"},
-            "Command": {"type": "text"},
-            "State": {"type": "keyword"},
-            "Info": {"type": "keyword"}
-          }
-        }
+        "ID": {"type":  "keyword"},
+        "User": {"type":  "keyword"},
+        "Host": {"type":  "keyword"},
+        "Database": {"type":  "keyword"},
+        "Command": {"type": "text"},
+        "State": {"type": "keyword"},
+        "Info": {"type": "keyword"}
       }
     }
   }
