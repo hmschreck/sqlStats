@@ -16,17 +16,22 @@ func SendToElk(elasticServer string, indexName string, input MySQLProcessList) {
 	ctx := context.Background()
 	timestamp := time.Now().Format("2006-01-02")
 	fullIndexName := fmt.Sprintf("%s-%s", indexName, timestamp)
+	bulkRequest := client.Bulk()
 	for _, process := range input.Processes {
-		process.DatabaseHost = input.DatabaseHost
-		process.Date = input.Date
 		jsonPacket, err := json.Marshal(process)
 		if err != nil {
 			panic(err)
 		}
 		jsonString := string(jsonPacket)
-		_, err = client.Index().Index(fullIndexName).Type("processlist").BodyJson(jsonString).Do(ctx)
-		if err != nil {
-			panic(err)
-		}
+		newBulkRequest := elastic.NewBulkIndexRequest().Index(fullIndexName).Type("processlist").Doc(jsonString)
+		//_, err = client.Index().Index(fullIndexName).Type("processlist").BodyJson(jsonString).Do(ctx)
+		//if err != nil {
+		//	panic(err)
+		//}
+		bulkRequest = bulkRequest.Add(newBulkRequest)
+	}
+	_, err = bulkRequest.Do(ctx)
+	if err != nil {
+		panic(err)
 	}
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 	"time"
 )
@@ -12,14 +11,12 @@ var databaseUser = flag.String("dbuser", "root", "user to log in as (should have
 var databasePassword = flag.String("dbpass", "", "password to log in to database as dbuser")
 var elkserver = flag.String("elasticserver", "http://127.0.0.1:9200", "full URL to Elastic Stack server")
 
+var hostname, _ = os.Hostname()
+
 func main() {
 	start := time.Now()
 	flag.Parse()
-	hostname, err := os.Hostname()
-	if err != nil {
-		fmt.Println("Could not get hostname; defaulting to localhost")
-	}
-	processList := GetProcessList(*databaseServer, *databaseUser, *databasePassword)
+	processList := GetProcessList(*databaseServer, *databaseUser, *databasePassword, start)
 	var fullProcessList MySQLProcessList
 	fullProcessList.Date = start
 	fullProcessList.DatabaseHost = hostname
