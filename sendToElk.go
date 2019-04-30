@@ -8,11 +8,7 @@ import (
 	"time"
 )
 
-func SendToElk(elasticServer string, indexName string, input MySQLProcessList) {
-	client, err := elastic.NewClient(elastic.SetURL(elasticServer))
-	if err != nil {
-		fmt.Println(input)
-	}
+func SendToElk(client *elastic.Client, indexName string, input MySQLProcessList) {
 	ctx := context.Background()
 	timestamp := time.Now().Format("2006-01-02")
 	fullIndexName := fmt.Sprintf("%s-%s", indexName, timestamp)
@@ -30,7 +26,7 @@ func SendToElk(elasticServer string, indexName string, input MySQLProcessList) {
 		//}
 		bulkRequest = bulkRequest.Add(newBulkRequest)
 	}
-	_, err = bulkRequest.Do(ctx)
+	_, err := bulkRequest.Do(ctx)
 	if err != nil {
 		panic(err)
 	}

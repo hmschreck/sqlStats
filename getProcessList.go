@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 	"time"
 )
@@ -10,14 +9,9 @@ import (
 import _ "github.com/go-sql-driver/mysql"
 
 // Log into specified server and get the process list
-func GetProcessList(databaseServer string, user string, password string, date time.Time) (output []MySQLProcess) {
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/", user, password, databaseServer))
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
-
-	err = db.Ping()
+func GetProcessList(db *sql.DB) (output []MySQLProcess) {
+	start := time.Now()
+	err := db.Ping()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +33,7 @@ func GetProcessList(databaseServer string, user string, password string, date ti
 		)
 		hostStringSplit := strings.Split(*NewProcess.Host, ":")
 		NewProcess.Host = &hostStringSplit[0]
-		NewProcess.Date = date
+		NewProcess.Date = start
 		NewProcess.DatabaseHost = hostname
 		output = append(output, NewProcess)
 	}

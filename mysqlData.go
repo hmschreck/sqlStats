@@ -16,7 +16,5 @@ type MySQLProcess struct {
 }
 
 type MySQLProcessList struct {
-	Date         time.Time      `json:"Date"`
-	Processes    []MySQLProcess `json:"Processes"`
-	DatabaseHost string         `json:"DatabaseHost"`
+	Processes []MySQLProcess `json:"Processes"`
 }
