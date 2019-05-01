@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// Send
 func SendToElk(client *elastic.Client, indexName string, input MySQLProcessList) {
 	ctx := context.Background()
 	timestamp := time.Now().Format("2006-01-02")
