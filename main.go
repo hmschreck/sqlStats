@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	"github.com/marcsauter/single"
-	"gopkg.in/olivere/elastic.v5"
+	"github.com/olivere/elastic/v7"
 	"log"
 	"os"
 	"sync"

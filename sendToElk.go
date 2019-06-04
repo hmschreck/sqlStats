@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gopkg.in/olivere/elastic.v5"
+	"github.com/olivere/elastic/v7"
 	"time"
 )
 
@@ -20,7 +20,7 @@ func SendToElk(client *elastic.Client, indexName string, input MySQLProcessList)
 			panic(err)
 		}
 		jsonString := string(jsonPacket)
-		newBulkRequest := elastic.NewBulkIndexRequest().Index(fullIndexName).Type("processlist").Doc(jsonString)
+		newBulkRequest := elastic.NewBulkIndexRequest().Index(fullIndexName).Doc(jsonString)
 		//_, err = client.Index().Index(fullIndexName).Type("processlist").BodyJson(jsonString).Do(ctx)
 		//if err != nil {
 		//	panic(err)

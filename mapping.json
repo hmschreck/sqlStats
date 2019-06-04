@@ -1,10 +1,9 @@
 {
-  "template": ["mysql-*"],
+  "index_patterns": ["mysql-*"],
   "settings" : {
     "number_of_shards": 1
   },
   "mappings": {
-    "processlist": {
       "properties": {
         "Date": {"type": "date"},
         "DatabaseHost": {"type": "keyword"},
@@ -16,6 +15,5 @@
         "State": {"type": "keyword"},
         "Info": {"type": "keyword"}
       }
-    }
   }
 }
